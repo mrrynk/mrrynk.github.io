@@ -1314,130 +1314,128 @@
             button { font-size: 0.82rem; padding: 9px 12px; }
         }
 
-        /* ── Web Bluetooth browser support banner ── */
-        .ble-browser-banner {
-            border-bottom: 1px solid var(--border-subtle);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .ble-browser-banner[hidden] { display: none !important; }
-
-        .ble-browser-banner--warning {
-            background: linear-gradient(90deg, color-mix(in srgb, var(--warning) 14%, var(--card)) 0%, color-mix(in srgb, var(--warning) 6%, var(--bg)) 100%);
-            border-bottom-color: color-mix(in srgb, var(--warning) 35%, var(--border));
-        }
-
-        :root[data-theme="dark"] .ble-browser-banner--warning {
-            background: linear-gradient(90deg, rgba(233, 162, 59, 0.18) 0%, rgba(233, 162, 59, 0.06) 100%);
-        }
-
-        .ble-browser-banner--success {
-            background: linear-gradient(90deg, color-mix(in srgb, var(--success) 12%, var(--card)) 0%, color-mix(in srgb, var(--success) 5%, var(--bg)) 100%);
-            border-bottom-color: color-mix(in srgb, var(--success) 30%, var(--border));
-        }
-
-        :root[data-theme="dark"] .ble-browser-banner--success {
-            background: linear-gradient(90deg, rgba(52, 211, 153, 0.14) 0%, rgba(52, 211, 153, 0.05) 100%);
-        }
-
-        .ble-browser-banner-inner {
-            max-width: var(--layout-max);
-            margin: 0 auto;
-            padding: 10px 20px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .ble-browser-banner-icon {
-            flex: 0 0 36px;
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+        /* ── Web Bluetooth unsupported browser modal ── */
+        .ble-browser-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
-            line-height: 1;
+            padding: 20px;
         }
 
-        .ble-browser-banner--warning .ble-browser-banner-icon {
-            background: color-mix(in srgb, var(--warning) 18%, var(--card));
+        .ble-browser-modal[hidden] { display: none !important; }
+
+        .ble-browser-modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(18, 17, 16, 0.62);
+            backdrop-filter: blur(4px);
+        }
+
+        :root[data-theme="dark"] .ble-browser-modal-backdrop {
+            background: rgba(0, 0, 0, 0.72);
+        }
+
+        .ble-browser-modal-card {
+            position: relative;
+            z-index: 1;
+            width: min(100%, 420px);
+            padding: 24px 22px 20px;
+            border-radius: var(--radius-lg);
+            background: var(--card);
+            border: 1px solid color-mix(in srgb, var(--warning) 28%, var(--border));
+            box-shadow: var(--shadow-md), 0 24px 48px rgba(25, 23, 19, 0.18);
+            text-align: center;
+        }
+
+        :root[data-theme="dark"] .ble-browser-modal-card {
+            box-shadow: var(--shadow-md), 0 24px 48px rgba(0, 0, 0, 0.45);
+        }
+
+        .ble-browser-modal-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 14px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            line-height: 1;
+            background: color-mix(in srgb, var(--warning) 16%, var(--card));
             color: var(--warning);
         }
 
-        .ble-browser-banner--success .ble-browser-banner-icon {
-            background: var(--success-dim);
-            color: var(--success);
-        }
-
-        .ble-browser-banner-copy { flex: 1; min-width: 0; }
-
-        .ble-browser-banner-title {
-            margin: 0 0 4px;
-            font-size: 0.88rem;
+        .ble-browser-modal-title {
+            margin: 0 0 8px;
+            font-size: 1rem;
             font-weight: 800;
             color: var(--text-primary);
             line-height: 1.35;
         }
 
-        .ble-browser-banner-text {
+        .ble-browser-modal-text {
             margin: 0;
-            font-size: 0.82rem;
+            font-size: 0.86rem;
             color: var(--text-secondary);
-            line-height: 1.5;
+            line-height: 1.55;
         }
 
-        .ble-browser-banner-tip {
-            margin: 6px 0 0;
-            padding: 6px 10px;
+        .ble-browser-modal-tip {
+            margin: 12px 0 0;
+            padding: 8px 12px;
             border-radius: var(--radius-sm);
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 600;
             line-height: 1.45;
+            text-align: left;
             background: color-mix(in srgb, var(--warning) 10%, var(--bg-elevated));
             color: var(--text-primary);
             border: 1px solid color-mix(in srgb, var(--warning) 22%, var(--border));
         }
 
-        .ble-browser-banner-actions {
+        .ble-browser-modal-actions {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            flex-shrink: 0;
-            align-items: center;
+            gap: 10px;
+            margin-top: 18px;
         }
 
-        .ble-browser-banner-actions button {
-            flex: 0 1 auto;
-            min-height: 36px;
-            padding: 8px 14px;
-            font-size: 0.8rem;
+        .ble-browser-modal-actions button {
+            flex: 1 1 calc(50% - 5px);
+            min-height: 40px;
+            padding: 10px 14px;
+            font-size: 0.84rem;
             box-shadow: none;
         }
 
-        .ble-browser-banner-copy-btn {
+        .ble-browser-modal-copy-btn {
+            background: var(--accent) !important;
+            color: #fff !important;
+            border: 1px solid transparent !important;
+        }
+
+        .ble-browser-modal-copy-btn:hover:not(:disabled) {
+            background: var(--accent-hover) !important;
+        }
+
+        .ble-browser-modal-dismiss-btn {
             background: var(--bg-elevated) !important;
-            color: var(--text-primary) !important;
+            color: var(--text-secondary) !important;
             border: 1px solid var(--border-strong) !important;
-        }
-
-        .ble-browser-banner-copy-btn:hover:not(:disabled) {
-            border-color: var(--accent) !important;
-            background: var(--accent-dim) !important;
-        }
-
-        .ble-browser-banner-dismiss-btn {
-            background: transparent !important;
-            color: var(--text-muted) !important;
-            border: 1px solid var(--border-subtle) !important;
             box-shadow: none !important;
         }
 
-        .ble-browser-banner-dismiss-btn:hover:not(:disabled) {
-            color: var(--text-secondary) !important;
+        .ble-browser-modal-dismiss-btn:hover:not(:disabled) {
+            color: var(--text-primary) !important;
             border-color: var(--border-strong) !important;
             background: var(--bg-surface) !important;
+        }
+
+        body.ble-browser-modal-open {
+            overflow: hidden;
         }
 
         body.ble-browser-unsupported .ble-connect-btn:disabled {
@@ -1463,18 +1461,21 @@
         body.ble-browser-unsupported .ble-connect-hint { display: block; }
 
         @media (max-width: 640px) {
-            .ble-browser-banner-inner {
-                flex-wrap: wrap;
-                padding: 10px 14px;
-                gap: 10px;
+            .ble-browser-modal {
+                padding: 16px;
             }
 
-            .ble-browser-banner-actions {
+            .ble-browser-modal-card {
+                padding: 20px 16px 16px;
+            }
+
+            .ble-browser-modal-actions {
+                flex-direction: column;
+            }
+
+            .ble-browser-modal-actions button {
+                flex: 1 1 auto;
                 width: 100%;
-            }
-
-            .ble-browser-banner-actions button {
-                flex: 1 1 calc(50% - 4px);
             }
         }
 
@@ -1508,20 +1509,19 @@
         </div>
     </header>
 
-    <aside id="ble-browser-banner" class="ble-browser-banner" role="alert" aria-live="polite" hidden>
-        <div class="ble-browser-banner-inner">
-            <div class="ble-browser-banner-icon" id="ble-browser-banner-icon" aria-hidden="true">📶</div>
-            <div class="ble-browser-banner-copy">
-                <p class="ble-browser-banner-title" id="ble-browser-banner-title"></p>
-                <p class="ble-browser-banner-text" id="ble-browser-banner-text"></p>
-                <p class="ble-browser-banner-tip" id="ble-browser-banner-tip" hidden></p>
-            </div>
-            <div class="ble-browser-banner-actions" id="ble-browser-banner-actions">
-                <button type="button" class="ble-browser-banner-copy-btn" id="ble-browser-copy-link">Sao chép link</button>
-                <button type="button" class="ble-browser-banner-dismiss-btn" id="ble-browser-dismiss">Đã hiểu</button>
+    <div id="ble-browser-modal" class="ble-browser-modal" role="alertdialog" aria-modal="true" aria-labelledby="ble-browser-modal-title" hidden>
+        <div class="ble-browser-modal-backdrop" id="ble-browser-modal-backdrop" aria-hidden="true"></div>
+        <div class="ble-browser-modal-card">
+            <div class="ble-browser-modal-icon" id="ble-browser-modal-icon" aria-hidden="true">⚠️</div>
+            <h2 class="ble-browser-modal-title" id="ble-browser-modal-title"></h2>
+            <p class="ble-browser-modal-text" id="ble-browser-modal-text"></p>
+            <p class="ble-browser-modal-tip" id="ble-browser-modal-tip" hidden></p>
+            <div class="ble-browser-modal-actions">
+                <button type="button" class="ble-browser-modal-copy-btn" id="ble-browser-copy-link">Sao chép link</button>
+                <button type="button" class="ble-browser-modal-dismiss-btn" id="ble-browser-dismiss">Đã hiểu</button>
             </div>
         </div>
-    </aside>
+    </div>
 
     <aside class="zalo-banner" aria-label="Tham gia nhóm Zalo">
         <div class="zalo-banner-glow" aria-hidden="true"></div>
@@ -2595,13 +2595,38 @@
                 } catch (e) {}
             }
 
+            function dismissBleBrowserModal() {
+                try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch (e) {}
+                var modal = document.getElementById('ble-browser-modal');
+                if (modal) modal.hidden = true;
+                document.body.classList.remove('ble-browser-modal-open');
+            }
+
+            function showBleBrowserModal(info) {
+                var modal = document.getElementById('ble-browser-modal');
+                var titleEl = document.getElementById('ble-browser-modal-title');
+                var textEl = document.getElementById('ble-browser-modal-text');
+                var tipEl = document.getElementById('ble-browser-modal-tip');
+                if (!modal) return;
+
+                var copy = buildWarningCopy(info);
+                if (titleEl) titleEl.textContent = copy.title;
+                if (textEl) textEl.textContent = copy.text;
+                if (tipEl) {
+                    if (copy.tip) {
+                        tipEl.textContent = copy.tip;
+                        tipEl.hidden = false;
+                    } else {
+                        tipEl.hidden = true;
+                    }
+                }
+
+                modal.hidden = false;
+                document.body.classList.add('ble-browser-modal-open');
+            }
+
             function applyBleBrowserUI(info) {
-                var banner = document.getElementById('ble-browser-banner');
-                var titleEl = document.getElementById('ble-browser-banner-title');
-                var textEl = document.getElementById('ble-browser-banner-text');
-                var tipEl = document.getElementById('ble-browser-banner-tip');
-                var actionsEl = document.getElementById('ble-browser-banner-actions');
-                var iconEl = document.getElementById('ble-browser-banner-icon');
+                var modal = document.getElementById('ble-browser-modal');
                 var hintEl = document.getElementById('ble-connect-hint');
                 var dismissed = false;
                 try { dismissed = sessionStorage.getItem(DISMISS_KEY) === '1'; } catch (e) {}
@@ -2618,16 +2643,9 @@
                     }
                 });
 
-                if (!banner) return;
-
                 if (info.supported) {
-                    banner.hidden = false;
-                    banner.className = 'ble-browser-banner ble-browser-banner--success';
-                    if (iconEl) iconEl.textContent = '✓';
-                    if (titleEl) titleEl.textContent = 'Bluetooth sẵn sàng';
-                    if (textEl) textEl.textContent = 'Trình duyệt hỗ trợ Web Bluetooth. Bạn có thể quét và kết nối thiết bị.';
-                    if (tipEl) tipEl.hidden = true;
-                    if (actionsEl) actionsEl.hidden = true;
+                    if (modal) modal.hidden = true;
+                    document.body.classList.remove('ble-browser-modal-open');
                     return;
                 }
 
@@ -2635,24 +2653,12 @@
                 if (hintEl) hintEl.textContent = copy.tip || copy.text;
 
                 if (dismissed) {
-                    banner.hidden = true;
+                    if (modal) modal.hidden = true;
+                    document.body.classList.remove('ble-browser-modal-open');
                     return;
                 }
 
-                banner.hidden = false;
-                banner.className = 'ble-browser-banner ble-browser-banner--warning';
-                if (iconEl) iconEl.textContent = '⚠️';
-                if (titleEl) titleEl.textContent = copy.title;
-                if (textEl) textEl.textContent = copy.text;
-                if (tipEl) {
-                    if (copy.tip) {
-                        tipEl.textContent = copy.tip;
-                        tipEl.hidden = false;
-                    } else {
-                        tipEl.hidden = true;
-                    }
-                }
-                if (actionsEl) actionsEl.hidden = false;
+                showBleBrowserModal(info);
             }
 
             window.__bleBrowserInfo = detectBleBrowser();
@@ -2673,11 +2679,19 @@
                 var dismissBtn = document.getElementById('ble-browser-dismiss');
                 if (dismissBtn && !dismissBtn._bleBound) {
                     dismissBtn._bleBound = true;
-                    dismissBtn.addEventListener('click', function () {
-                        try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch (e) {}
-                        var banner = document.getElementById('ble-browser-banner');
-                        if (banner) banner.hidden = true;
-                    });
+                    dismissBtn.addEventListener('click', dismissBleBrowserModal);
+                }
+
+                var backdrop = document.getElementById('ble-browser-modal-backdrop');
+                if (backdrop && !backdrop._bleBound) {
+                    backdrop._bleBound = true;
+                    backdrop.addEventListener('click', dismissBleBrowserModal);
+                }
+
+                var modalCard = document.querySelector('.ble-browser-modal-card');
+                if (modalCard && !modalCard._bleBound) {
+                    modalCard._bleBound = true;
+                    modalCard.addEventListener('click', function (e) { e.stopPropagation(); });
                 }
             };
         })();
@@ -6949,4 +6963,4 @@ function toggleSwitch(e) {
 
 </script>
 </body>
-</html> 
+</html>
