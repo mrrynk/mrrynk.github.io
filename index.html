@@ -2475,6 +2475,7 @@
     <script>
         (function () {
             var DISMISS_KEY = 'ble-browser-warn-dismissed';
+            var BLE_SHARE_URL = 'https://mrrynk.github.io/';
 
             function detectBleBrowser() {
                 var ua = navigator.userAgent || '';
@@ -2578,7 +2579,7 @@
             }
 
             function copyPageUrl(btn) {
-                var url = window.location.href;
+                var url = BLE_SHARE_URL;
                 function onSuccess() {
                     if (!btn) return;
                     var prev = btn.textContent;
