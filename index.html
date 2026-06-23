@@ -1316,9 +1316,6 @@
 
         /* ── Web Bluetooth browser support banner ── */
         .ble-browser-banner {
-            position: sticky;
-            top: var(--header-h);
-            z-index: 99;
             border-bottom: 1px solid var(--border-subtle);
             box-shadow: var(--shadow-sm);
         }
@@ -2486,7 +2483,6 @@
                 var isChrome = /Chrome/i.test(ua) && !/Edg|OPR|SamsungBrowser/i.test(ua);
                 var isEdge = /Edg/i.test(ua);
                 var isFirefox = /Firefox/i.test(ua) && !/Seamonkey/i.test(ua);
-                var isSafariIOS = isIOS && /Safari/i.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua);
 
                 var inApp = {
                     messenger: /FBAN|FBAV|FB_IAB|Messenger/i.test(ua),
@@ -2520,8 +2516,8 @@
                 if (isInApp) {
                     reason = 'in_app';
                     supported = false;
-                } else if (isSafariIOS) {
-                    reason = 'safari_ios';
+                } else if (isIOS) {
+                    reason = 'ios';
                     supported = false;
                 } else if (isFirefox) {
                     reason = 'firefox';
@@ -2558,8 +2554,8 @@
                     tip = '💡 Thoát Messenger → mở link bằng Chrome.';
                 } else if (info.isInApp) {
                     tip = '💡 Thoát ' + info.inAppName + ' → mở link bằng Chrome.';
-                } else if (info.reason === 'safari_ios') {
-                    text = 'Safari trên iPhone/iPad không hỗ trợ Web Bluetooth. Dùng ' + info.recommend + ' để kết nối thiết bị.';
+                } else if (info.reason === 'ios') {
+                    text = 'iPhone/iPad không hỗ trợ Web Bluetooth (kể cả Chrome). Dùng ' + info.recommend + ' trên Android hoặc máy tính.';
                 } else if (info.reason === 'firefox') {
                     text = 'Firefox không hỗ trợ Web Bluetooth. Vui lòng dùng ' + info.recommend + '.';
                 }
