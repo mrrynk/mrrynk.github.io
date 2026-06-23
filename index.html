@@ -1381,6 +1381,7 @@
             font-size: 0.86rem;
             color: var(--text-secondary);
             line-height: 1.55;
+            white-space: pre-line;
         }
 
         .ble-browser-modal-tip {
@@ -2490,7 +2491,7 @@
                     facebook: /FBAN|FBAV|FB_IAB/i.test(ua) && !/Messenger/i.test(ua),
                     instagram: /Instagram/i.test(ua),
                     line: /\bLine\//i.test(ua),
-                    zalo: /Zalo/i.test(ua),
+                    zalo: /\bZalo/i.test(ua),
                     wechat: /MicroMessenger/i.test(ua),
                     tiktok: /TikTok|musical_ly/i.test(ua),
                     twitter: /Twitter/i.test(ua),
@@ -2559,27 +2560,18 @@
 
                 if (info.isInApp) {
                     if (info.isIOS) {
-                        text = 'Trình duyệt trong ứng dụng không hỗ trợ Bluetooth. Hãy thoát ' + (info.inAppName || 'ứng dụng') + ' và mở link trong Bluefy, hoặc sao chép link và mở trong Bluefy.';
+                        text = 'Cài Bluefy trên App Store → mở lại link này trong Bluefy → Quét thiết bị Bluetooth';
                     } else if (info.isAndroid) {
-                        text = 'Trình duyệt trong ứng dụng không hỗ trợ Bluetooth. Hãy thoát ' + (info.inAppName || 'ứng dụng') + ' và mở link bằng Chrome: nhấn ⋮ → Mở bằng Chrome / Sao chép link mở Chrome.';
+                        text = 'Mở link bằng Chrome → Quét thiết bị Bluetooth';
                     } else {
-                        text = 'Trình duyệt trong ứng dụng không hỗ trợ Bluetooth. Vui lòng mở link bằng trình duyệt hỗ trợ Bluetooth.';
-                    }
-                    if (info.inAppName === 'Messenger') {
-                        tip = info.isIOS
-                            ? '💡 Thoát Messenger → mở link trong Bluefy hoặc sao chép link mở Bluefy.'
-                            : '💡 Thoát Messenger → mở link bằng Chrome.';
-                    } else {
-                        tip = info.isIOS
-                            ? '💡 Thoát ' + info.inAppName + ' → mở link trong Bluefy hoặc sao chép link mở Bluefy.'
-                            : '💡 Thoát ' + info.inAppName + ' → mở link bằng Chrome.';
+                        text = '📱 iPhone: Cài Bluefy (App Store) → mở link trong Bluefy\n🤖 Android: Mở link bằng Chrome';
                     }
                 } else if (info.reason === 'ios') {
-                    text = 'Trên iPhone/iPad, hãy cài Bluefy (App Store) và mở link trong Bluefy để dùng Bluetooth.';
+                    text = 'Cài Bluefy trên App Store → mở lại link này trong Bluefy → Quét thiết bị Bluetooth';
                 } else if (info.reason === 'firefox') {
                     text = 'Firefox không hỗ trợ Web Bluetooth. Vui lòng dùng ' + info.recommend + '.';
                 } else {
-                    text = 'Vui lòng mở bằng ' + info.recommend + ': nhấn ⋮ → Mở bằng Chrome / Sao chép link mở Chrome.';
+                    text = 'Vui lòng mở bằng ' + info.recommend + '.';
                 }
 
                 return { title: title, text: text, tip: tip };
@@ -2661,7 +2653,9 @@
                     if (!info.supported) {
                         btn.title = info.isIOS
                             ? 'Trình duyệt không hỗ trợ Bluetooth — mở trong Bluefy'
-                            : 'Trình duyệt không hỗ trợ Bluetooth — mở bằng Chrome';
+                            : info.isAndroid
+                                ? 'Trình duyệt không hỗ trợ Bluetooth — mở bằng Chrome'
+                                : 'Trình duyệt không hỗ trợ Bluetooth — mở trong Bluefy hoặc Chrome';
                     } else {
                         btn.removeAttribute('title');
                     }
