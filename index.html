@@ -2480,6 +2480,7 @@
                 var hasBluetoothApi = !!(navigator.bluetooth && typeof navigator.bluetooth.requestDevice === 'function');
                 var isAndroid = /Android/i.test(ua);
                 var isIOS = /iPad|iPhone|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                var isBluefy = /Bluefy/i.test(ua);
                 var isChrome = /Chrome/i.test(ua) && !/Edg|OPR|SamsungBrowser/i.test(ua);
                 var isEdge = /Edg/i.test(ua);
                 var isFirefox = /Firefox/i.test(ua) && !/Seamonkey/i.test(ua);
@@ -2516,20 +2517,25 @@
                 if (isInApp) {
                     reason = 'in_app';
                     supported = false;
-                } else if (isIOS) {
-                    reason = 'ios';
-                    supported = false;
-                } else if (isFirefox) {
-                    reason = 'firefox';
-                    supported = false;
                 } else if (!hasBluetoothApi) {
-                    reason = 'no_api';
+                    if (isIOS) {
+                        reason = 'ios';
+                    } else if (isFirefox) {
+                        reason = 'firefox';
+                    } else {
+                        reason = 'no_api';
+                    }
                     supported = false;
                 }
 
-                var recommend = isAndroid
-                    ? 'Google Chrome trên Android'
-                    : 'Google Chrome hoặc Microsoft Edge trên máy tính';
+                var recommend;
+                if (isAndroid) {
+                    recommend = 'Google Chrome trên Android';
+                } else if (isIOS) {
+                    recommend = 'Bluefy (App Store)';
+                } else {
+                    recommend = 'Google Chrome hoặc Microsoft Edge trên máy tính';
+                }
 
                 return {
                     supported: supported,
@@ -2539,6 +2545,7 @@
                     isInApp: isInApp,
                     isAndroid: isAndroid,
                     isIOS: isIOS,
+                    isBluefy: isBluefy,
                     isChrome: isChrome,
                     isEdge: isEdge,
                     recommend: recommend
@@ -2547,17 +2554,32 @@
 
             function buildWarningCopy(info) {
                 var title = 'Trình duyệt này không hỗ trợ Bluetooth';
-                var text = 'Vui lòng mở bằng ' + info.recommend + ': nhấn ⋮ → Mở bằng Chrome / Sao chép link mở Chrome.';
+                var text;
                 var tip = '';
 
-                if (info.inAppName === 'Messenger') {
-                    tip = '💡 Thoát Messenger → mở link bằng Chrome.';
-                } else if (info.isInApp) {
-                    tip = '💡 Thoát ' + info.inAppName + ' → mở link bằng Chrome.';
+                if (info.isInApp) {
+                    if (info.isIOS) {
+                        text = 'Trình duyệt trong ứng dụng không hỗ trợ Bluetooth. Hãy thoát ' + (info.inAppName || 'ứng dụng') + ' và mở link trong Bluefy, hoặc sao chép link và mở trong Bluefy.';
+                    } else if (info.isAndroid) {
+                        text = 'Trình duyệt trong ứng dụng không hỗ trợ Bluetooth. Hãy thoát ' + (info.inAppName || 'ứng dụng') + ' và mở link bằng Chrome: nhấn ⋮ → Mở bằng Chrome / Sao chép link mở Chrome.';
+                    } else {
+                        text = 'Trình duyệt trong ứng dụng không hỗ trợ Bluetooth. Vui lòng mở link bằng trình duyệt hỗ trợ Bluetooth.';
+                    }
+                    if (info.inAppName === 'Messenger') {
+                        tip = info.isIOS
+                            ? '💡 Thoát Messenger → mở link trong Bluefy hoặc sao chép link mở Bluefy.'
+                            : '💡 Thoát Messenger → mở link bằng Chrome.';
+                    } else {
+                        tip = info.isIOS
+                            ? '💡 Thoát ' + info.inAppName + ' → mở link trong Bluefy hoặc sao chép link mở Bluefy.'
+                            : '💡 Thoát ' + info.inAppName + ' → mở link bằng Chrome.';
+                    }
                 } else if (info.reason === 'ios') {
-                    text = 'iPhone/iPad không hỗ trợ Web Bluetooth (kể cả Chrome). Dùng ' + info.recommend + ' trên Android hoặc máy tính.';
+                    text = 'Trên iPhone/iPad, hãy cài Bluefy (App Store) và mở link trong Bluefy để dùng Bluetooth.';
                 } else if (info.reason === 'firefox') {
                     text = 'Firefox không hỗ trợ Web Bluetooth. Vui lòng dùng ' + info.recommend + '.';
+                } else {
+                    text = 'Vui lòng mở bằng ' + info.recommend + ': nhấn ⋮ → Mở bằng Chrome / Sao chép link mở Chrome.';
                 }
 
                 return { title: title, text: text, tip: tip };
@@ -2637,7 +2659,9 @@
                 document.querySelectorAll('.ble-connect-btn').forEach(function (btn) {
                     btn.disabled = !info.supported;
                     if (!info.supported) {
-                        btn.title = 'Trình duyệt không hỗ trợ Bluetooth — mở bằng Chrome';
+                        btn.title = info.isIOS
+                            ? 'Trình duyệt không hỗ trợ Bluetooth — mở trong Bluefy'
+                            : 'Trình duyệt không hỗ trợ Bluetooth — mở bằng Chrome';
                     } else {
                         btn.removeAttribute('title');
                     }
